@@ -7,7 +7,6 @@ var server = http.createServer(function (req, res) {
 
     var parsedUrl = url.parse(req.url, true);
 
-
     var path = parsedUrl.pathname;
 
     var trimmedPath = path.replace(/^\/*|\/*$/g, '');
@@ -27,14 +26,47 @@ var server = http.createServer(function (req, res) {
     req.on('end', function () {
         buffer += decoder.end();
 
-        console.log('Request received on path:' + trimmedPath + ' with this method: ' + method + 'with these query string parameters', queryStringObject)
-        console.log('Request received these headers: ', headers)
-        console.log('Request received these payloads: ', buffer)
+        var chosenHandler = router[trimmedPath] === undefined ? handlers.notFound : router[trimmedPath];
 
-        res.end('Hello world\n');
+        var data = {
+            'trimmedPath': trimmedPath,
+            'queryStringObject': queryStringObject,
+            'method': method,
+            'headers': headers,
+            'payload': buffer
+        };
+
+        chosenHandler(data, function (statusCode, payload) {
+
+            statusCode = typeof (statusCode) == 'number' ? statusCode : 200;
+
+            payload = typeof (payload) == 'object' ? payload : {};
+
+            var payloadString = JSON.stringify(payload);
+
+            res.writeHead(statusCode);
+            res.end(payloadString);
+
+            console.log('Returning this response', statusCode, payloadString)
+
+        })
     })
 });
 
-server.listen(3000, function () {
-    console.log("The server is listening on port 3000 now")
+server.listen(5000, function () {
+    console.log("The server is listening on port 5000 now")
 })
+
+var handlers = {};
+
+handlers.sample = function (data, callback) {
+    callback(406, { 'name': 'sample handler' })
+}
+
+handlers.notFound = function (data, callback) {
+    callback(404)
+}
+
+var router = {
+    'sample': handlers.sample
+}
