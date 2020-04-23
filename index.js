@@ -5,6 +5,12 @@ var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
 var config = require('./config');
 var fs = require('fs');
+var _data = require('./lib/data');
+
+
+_data.create('test', 'rukky', { 'hassan': 'usman' }, function (err) {
+    console.log('this was the error', err)
+})
 
 var httpServer = http.createServer(function (req, res) {
     unifiedserver(req, res)
