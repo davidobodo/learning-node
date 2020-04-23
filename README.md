@@ -4,4 +4,6 @@
 -Streams are little bits of information that come in one at a time in Node.
  payloads come into an http request as a stream
 
- -ping route- just to show that ur app is still alive
+ -ping route-just to show that ur app is still alive
+
+ -use file system as a key value store
