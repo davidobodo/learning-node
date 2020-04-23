@@ -26,7 +26,7 @@ var server = http.createServer(function (req, res) {
     req.on('end', function () {
         buffer += decoder.end();
 
-        var chosenHandler = router[trimmedPath] === undefined ? handlers.notFound : router[trimmedPath];
+        var chosenHandler = typeof (router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound;
 
         var data = {
             'trimmedPath': trimmedPath,
