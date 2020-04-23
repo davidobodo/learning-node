@@ -8,8 +8,8 @@ var fs = require('fs');
 var _data = require('./lib/data');
 
 
-_data.read('test1', 'rukky', function (err, data) {
-    console.log('this was the error', err, ' this was the data ', data)
+_data.update('test', 'rukky', { 'obo': 'dav' }, function (err) {
+    console.log('this was the error', err)
 })
 
 var httpServer = http.createServer(function (req, res) {
