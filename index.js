@@ -8,7 +8,7 @@ var fs = require('fs');
 var _data = require('./lib/data');
 
 
-_data.update('test', 'rukky', { 'obo': 'dav' }, function (err) {
+_data.delete('test', 'rukky', function (err) {
     console.log('this was the error', err)
 })
 
