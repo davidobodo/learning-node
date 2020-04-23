@@ -5,12 +5,8 @@ var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
 var config = require('./config');
 var fs = require('fs');
-var _data = require('./lib/data');
+var handlers = require('./lib/handlers');
 
-
-_data.delete('test', 'rukky', function (err) {
-    console.log('this was the error', err)
-})
 
 var httpServer = http.createServer(function (req, res) {
     unifiedserver(req, res)
@@ -81,16 +77,6 @@ var unifiedserver = function (req, res) {
 
         })
     })
-}
-
-var handlers = {};
-
-handlers.ping = function (data, callback) {
-    callback(200)
-}
-
-handlers.notFound = function (data, callback) {
-    callback(404)
 }
 
 var router = {
