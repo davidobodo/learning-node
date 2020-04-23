@@ -5,7 +5,14 @@ var StringDecoder = require('string_decoder').StringDecoder;
 var config = require('./config');
 
 var server = http.createServer(function (req, res) {
+    unifiedserver(req, res)
+});
 
+server.listen(config.port, function () {
+    console.log("The server is listening on port " + config.port + " now " + config.envName + " mode")
+})
+
+var unifiedserver = function (req, res) {
     var parsedUrl = url.parse(req.url, true);
 
     var path = parsedUrl.pathname;
@@ -53,11 +60,7 @@ var server = http.createServer(function (req, res) {
 
         })
     })
-});
-
-server.listen(config.port, function () {
-    console.log("The server is listening on port " + config.port + " now " + config.envName + " mode")
-})
+}
 
 var handlers = {};
 
