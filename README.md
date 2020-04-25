@@ -11,3 +11,7 @@
 ###switches in lib file for storing data
  - r+ switch - show error if file doesnt exist yet
  - wx switch - show error if file already exists
+
+
+ -use crypto(built in lib in node) fro hashing password 
+ -we used SHA256 in this project for hashing password because it is built into node
