@@ -1,1 +1,1 @@
-{"id":"wwl4e47snnpw3qewrlat","userPhone":"08034744447","protocol":"http","url":"obodo.com","method":"get","successCodes":[200,201,302,500],"timeoutSeconds":2,"state":"down","lastChecked":1589823058472}
+{"id":"wwl4e47snnpw3qewrlat","userPhone":"08034744447","protocol":"https","url":"google.com","method":"post","successCodes":[200,201,302,500],"timeoutSeconds":5,"state":"down","lastChecked":1589823404529}
