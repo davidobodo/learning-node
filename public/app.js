@@ -9,7 +9,6 @@ app.client = {}
 // Interface for making API calls
 app.client.request = function (headers, path, method, queryStringObject, payload, callback) {
 
-    // Set defaults
     headers = typeof (headers) == 'object' && headers !== null ? headers : {};
     path = typeof (path) == 'string' ? path : '/';
     method = typeof (method) == 'string' && ['POST', 'GET', 'PUT', 'DELETE'].indexOf(method.toUpperCase()) > -1 ? method.toUpperCase() : 'GET';
@@ -74,44 +73,38 @@ app.client.request = function (headers, path, method, queryStringObject, payload
 
 };
 
-// Bind the logout button
-// app.bindLogoutButton = function () {
-//     document.getElementById("logoutButton").addEventListener("click", function (e) {
+app.bindLogoutButton = function () {
+    document.getElementById("logoutButton").addEventListener("click", function (e) {
+        e.preventDefault();
+        app.logUserOut();
+    });
+};
 
-//         // Stop it from redirecting anywhere
-//         e.preventDefault();
+// Log the user out then redirect them
+app.logUserOut = function (redirectUser) {
+    // Set redirectUser to default to true
+    redirectUser = typeof (redirectUser) == 'boolean' ? redirectUser : true;
 
-//         // Log the user out
-//         app.logUserOut();
+    // Get the current token id
+    var tokenId = typeof (app.config.sessionToken.id) == 'string' ? app.config.sessionToken.id : false;
 
-//     });
-// };
+    // Send the current token to the tokens endpoint to delete it
+    var queryStringObject = {
+        'id': tokenId
+    };
+    app.client.request(undefined, 'api/tokens', 'DELETE', queryStringObject, undefined, function (statusCode, responsePayload) {
+        // Set the app.config token as false
+        app.setSessionToken(false);
 
-// // Log the user out then redirect them
-// app.logUserOut = function (redirectUser) {
-//     // Set redirectUser to default to true
-//     redirectUser = typeof (redirectUser) == 'boolean' ? redirectUser : true;
+        // Send the user to the logged out page
+        if (redirectUser) {
+            window.location = '/session/deleted';
+        }
 
-//     // Get the current token id
-//     var tokenId = typeof (app.config.sessionToken.id) == 'string' ? app.config.sessionToken.id : false;
+    });
+};
 
-//     // Send the current token to the tokens endpoint to delete it
-//     var queryStringObject = {
-//         'id': tokenId
-//     };
-//     app.client.request(undefined, 'api/tokens', 'DELETE', queryStringObject, undefined, function (statusCode, responsePayload) {
-//         // Set the app.config token as false
-//         app.setSessionToken(false);
-
-//         // Send the user to the logged out page
-//         if (redirectUser) {
-//             window.location = '/session/deleted';
-//         }
-
-//     });
-// };
-
-// // Bind the forms
+// Bind the forms
 app.bindForms = function () {
     if (document.querySelector("form")) {
 
@@ -522,13 +515,13 @@ app.init = function () {
     app.bindForms();
 
     // Bind logout logout button
-    // app.bindLogoutButton();
+    app.bindLogoutButton();
 
     // Get the token from localstorage
-    // app.getSessionToken();
+    app.getSessionToken();
 
     // Renew token
-    // app.tokenRenewalLoop();
+    app.tokenRenewalLoop();
 
     // Load data on page
     // app.loadDataOnPage();
